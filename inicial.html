@@ -107,7 +107,7 @@ else{
    pdf.text(20,20,"Usuarios registrados");
 
 var columns = ["Usuario", "Nombre", "Apellido", "Contraseña"];
-fetch('https://proyecto2-201907483.herokuapp.com//usuarios/')
+fetch('https://proyecto2-201907483.herokuapp.com/usuarios/')
 .then(res=>res.json())
 .catch(error =>{
  console.log(error)
@@ -136,7 +136,7 @@ pdf.save("reporte usuarios.pdf");
    pdf.text(20,20,"Canciones en el sistema");
 
 var columns = ["Nombre", "Artista", "Album", "Fecha"];
-fetch('https://proyecto2-201907483.herokuapp.com//canciones/')
+fetch('https://proyecto2-201907483.herokuapp.com/canciones/')
 .then(res=>res.json())
 .catch(error =>{
  console.log(error)
@@ -200,7 +200,7 @@ function cargarArchivo(){
          'imagen':Imagen
 
          }
-        fetch('https://proyecto2-201907483.herokuapp.com//canciones/',{
+        fetch('https://proyecto2-201907483.herokuapp.com/canciones/',{
          method:'POST',
               body: JSON.stringify(objeto),
               headers:{
@@ -243,7 +243,7 @@ function cargarArchivo(){
            'fecha':Fecha,
            'imagen':Imagen
             }
-           fetch('https://proyecto2-201907483.herokuapp.com//canciones/',{
+           fetch('https://proyecto2-201907483.herokuapp.com/canciones/',{
            method:'POST',
            body: JSON.stringify(objeto),
            headers:{

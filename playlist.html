@@ -72,7 +72,7 @@
     
       function variables(){
          var n = document.querySelector('#Nombre').value   
-         fetch(`https://proyecto2-201907483.herokuapp.com//canciones/3${n}/`)
+         fetch(`https://proyecto2-201907483.herokuapp.com/canciones/3${n}/`)
          .then(res=>res.json())
          .catch(error =>{
              console.log(error)
@@ -119,7 +119,7 @@
       'cancion': n
 
        }
-     fetch('https://proyecto2-201907483.herokuapp.com//comentarios/',{
+     fetch('https://proyecto2-201907483.herokuapp.com/comentarios/',{
       method:'POST',
       body: JSON.stringify(objeto),
       headers:{
