@@ -76,7 +76,7 @@
     
       function variables(){
          var n = document.querySelector('#Nombre').value   
-         fetch(`http://localhost:3000/canciones/${n}/`)
+         fetch(`https://proyecto2-201907483.herokuapp.com//canciones/${n}/`)
          .then(res=>res.json())
          .catch(error =>{
              console.log(error)
@@ -124,7 +124,7 @@
             'linkspotify':v7,
             'linkyoutube': v8 
         }
-        fetch(`http://localhost:3000/canciones/3${v1}/`,{
+        fetch(`https://proyecto2-201907483.herokuapp.com//canciones/3${v1}/`,{
               method:'POST',
               body: JSON.stringify(objeto),
               headers:{
@@ -155,7 +155,7 @@
       'cancion': n
 
        }
-     fetch('http://localhost:3000/comentarios/',{
+     fetch('https://proyecto2-201907483.herokuapp.com//comentarios/',{
       method:'POST',
       body: JSON.stringify(objeto),
       headers:{

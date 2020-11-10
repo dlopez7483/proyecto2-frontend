@@ -79,7 +79,7 @@
             
             function agregar(){
             var tabla = document.querySelector('#Cuerpo')
-            fetch('http://localhost:3000/canciones/')
+            fetch('https://proyecto2-201907483.herokuapp.com//canciones/')
          .then(res=>res.json())
          .catch(error =>{
              console.log(error)
@@ -114,7 +114,7 @@
 
             function eliminar(boton){
         var h = boton.value
-        fetch(`http://localhost:3000/canciones/${h}/`,{
+        fetch(`https://proyecto2-201907483.herokuapp.com//canciones/${h}/`,{
         method:'DELETE',
 
         })       
@@ -133,7 +133,7 @@
 
         function agregar2(boton){
          var c = boton.value
-            fetch(`http://localhost:3000/canciones/2${c}/`)
+            fetch(`https://proyecto2-201907483.herokuapp.com//canciones/2${c}/`)
          .then(res=>res.json())
          .catch(error =>{
              console.log(error)
@@ -174,7 +174,7 @@
             'linkspotify':Linkspo,
             'linkyoutube': Linkyoutube 
             }
-            fetch(`http://localhost:3000/canciones/${a}/`,{
+            fetch(`https://proyecto2-201907483.herokuapp.com//canciones/${a}/`,{
               method:'POST',
               body: JSON.stringify(objeto),
               headers:{
@@ -196,7 +196,7 @@
         
         function eliminar2(butin){
         var h = butin.value
-        fetch(`http://localhost:3000/canciones/${h}/`,{
+        fetch(`https://proyecto2-201907483.herokuapp.com//canciones/${h}/`,{
         method:'DELETE',
 
         })       

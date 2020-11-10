@@ -86,7 +86,7 @@
        }
        function eliminar(){
         var h = sessionStorage.usuario
-        fetch(`http://localhost:3000/usuarios/${h}/`,{
+        fetch(`https://proyecto2-201907483.herokuapp.com//usuarios/${h}/`,{
         method:'DELETE',
 
         })       
@@ -110,7 +110,7 @@
 
        function funcion(){
          var fff = sessionStorage.usuario
-         fetch(`http://localhost:3000/usuarios/${fff}/`)
+         fetch(`https://proyecto2-201907483.herokuapp.com//usuarios/${fff}/`)
          .then(response =>response.json())
          .catch(error =>{
            console.log(error)
@@ -135,7 +135,7 @@
        'user': User,
        'contraseña': Pas,
        }
-       fetch(`http://localhost:3000/usuarios/${ff}/`,{
+       fetch(`https://proyecto2-201907483.herokuapp.com//usuarios/${ff}/`,{
        method:'PUT',
        body: JSON.stringify(objeto),
        headers:{
