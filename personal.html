@@ -1,0 +1,171 @@
+<html>
+    <head>
+    <link href="estiloinicial.css" rel="stylesheet">
+    </head>
+    <body onload="funcion()" id="main" >
+    <div class="sidenav">
+             <div class="login-main-text">
+                <button onclick ="cambio1()" type ="button"class="btn btn-black">Inicial</button>
+                <p></p>
+                 <button onclick="cambio2()" type="button" class="btn btn-black">informacion usuarios</button>
+                 <p></p>
+                 <button onclick="cambio3()" type="button" class="btn btn-black">Agregar canciones</button>
+                <p></p>
+                <button onclick="cambio7()" class="btn btn-black">playlist</button>
+                <p></p>
+                <button onclick="cambio5()" type="button" class="btn btn-black">buscar canciones</button>
+                <p></p>
+                <button onclick="cambio6()" type="button" class="btn btn-black">comentarios</button>
+                <p></p>
+                <button onclick="cambio4()" type="button" class="btn btn-black">Salir</button>
+            
+            </div>
+          </div>
+    
+          <div class="main">
+              <div class="form-group row">
+                <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre</label>
+                <div class="col-md-6">
+                    <input id ="Nombre" type="text"  class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+             <label for="apellido" class="col-md-4 col-form-label text-md-right">Apellido</label>
+             <div class="col-md-6">
+                 <input id ="Apellido" type="text"  class="form-control">
+             </div>
+         </div>
+         <div class="form-group row">
+          <label for="user" class="col-md-4 col-form-label text-md-right">Usuario</label>
+          <div class="col-md-6">
+              <input id ="Usuario" type="text"  class="form-control">
+          </div>
+          <div class="form-group row">
+            <label for="contrasenia" class="col-md-4 col-form-label text-md-right">contrasenia</label>
+            <div class="col-md-6">
+                <input id ="Pass" type="text"  class="form-control">
+            </div>
+          <p></p>
+             <button onclick="edit()" type="button" class="btn btn-black">Editar</button>
+            </div>
+            <p></p>
+            <button onclick="eliminar()" type="button" class="btn btn-black">Eliminar</button>
+           </div>
+       
+
+     </div>
+     <script>
+      function cambio1(){
+          location.href="inicial.html"
+      }
+       function cambio2(){
+        var h = sessionStorage.usuario
+        if(h=="admin"){
+          location.href="inforuser.html"
+        }
+          else{alert("No tiene persmisos de administrador")} 
+       }
+
+       function cambio3(){
+        var h = sessionStorage.usuario
+        if(h=="admin"){
+          location.href="vercanciones.html"
+        }
+          else{alert("No tiene persmisos de administrador")} 
+
+
+            
+       }
+       
+       function cambio6(){
+         location.href="comentarios.html"
+       }
+       
+       function cambio7(){
+         location.href="playlist.html"
+       }
+       function eliminar(){
+        var h = sessionStorage.usuario
+        fetch(`http://localhost:3000/usuarios/${h}/`,{
+        method:'DELETE',
+
+        })       
+        .then(res => res.json())
+        .catch(error =>{
+       alert("Ocurrio un error")
+       })
+       .then( response => {
+        alert("Se Elimino el usuario exitosamente")
+         location.href="inicio.html"
+       })
+
+       }
+         
+       function cambio4(){
+         location.href="inicio.html"   
+       }
+       function cambio5(){
+           location.href="canciones.html"
+       }
+
+       function funcion(){
+         var fff = sessionStorage.usuario
+         fetch(`http://localhost:3000/usuarios/${fff}/`)
+         .then(response =>response.json())
+         .catch(error =>{
+           console.log(error)
+            alert("Error en backend")
+         })
+         .then(response =>{
+            document.querySelector('#Nombre').value = response.nombre
+            document.querySelector('#Apellido').value = response.apellido
+            document.querySelector('#Usuario').value =response.user
+            document.querySelector('#Pass').value= response.contraseña
+         })
+       } 
+       function edit(){
+       var ff = sessionStorage.usuario
+       var name = document.querySelector('#Nombre').value
+       var Apellido = document.querySelector('#Apellido').value
+       var User = document.querySelector('#Usuario').value
+       var Pas = document.querySelector('#Pass').value
+       var objeto ={
+       'nombre':name,
+       'apellido': Apellido,
+       'user': User,
+       'contraseña': Pas,
+       }
+       fetch(`http://localhost:3000/usuarios/${ff}/`,{
+       method:'PUT',
+       body: JSON.stringify(objeto),
+       headers:{
+       'Content-Type':'application/json'
+       }
+       })
+       .then(res => res.json())
+       .catch(err => {
+        console.log(err)
+       alert("Error, verifique en consola")
+       })
+       .then(response =>{
+
+       alert("Actualizado")
+       location.href = "inicio.html"
+       })
+       }
+        
+         
+         </script>
+
+
+
+
+
+
+
+
+            </body>
+        
+           
+      
+          </html>

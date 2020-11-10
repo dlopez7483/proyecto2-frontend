@@ -1,0 +1,122 @@
+
+<html>
+    <head>
+    <link href="estiloinicial.css" rel="stylesheet" id="bootstrap-css">
+    </head>
+    <body onload="info()" id="main">
+    <div class="sidenav">
+             <div class="login-main-text">
+                <button onclick="cambio1()" class="btn btn-black">Inicial</button>
+                <p></p>
+                <button onclick="cambio4()" type="button" class="btn btn-black">Información personal</button>
+               <p></p>
+                <button onclick="cambio3()" class="btn btn-black">agregar canciones</button>
+                <p></p>
+                <button onclick="cambio5()" class="btn btn-black"> canciones</button>
+                <p></p>
+                <button onclick="cambio7()" class="btn btn-black">playlist</button>
+                <p></p>
+                <button onclick="cambio6()" class="btn btn-black"> comentarios</button>
+                <p></p>
+                <button onclick="cambio2()" class="btn btn-black">Salir</button>
+             </div>
+          </div>
+    
+          <div class="main">
+            <div class="container">
+             <div class="section-title">
+              <h2>Usuarios </h2>
+             </div>
+             <table class="table" >
+                 <thead>
+                 <tr>
+                 <th scope="col">Nombre</th>
+                 <th scope="col"> Apellido</th>
+                 <th scope="col"> Usuario</th>
+                 <th scope="col"> Edicion</th>
+                </tr>
+                <tbody id="cuerpo"></tbody>
+               </thead>
+             </table>
+           
+            </div>
+     
+          </div>
+          
+       
+       </body>
+        <script>
+
+          function cambio4(){
+         location.href="personal.html"
+         
+
+          }
+
+          function cambio6(){
+
+            location.href="comentarios.html"
+          }
+        function info(){
+         var inicio = sessionStorage.usuario
+         var tabla = document.querySelector('#cuerpo')
+         fetch('http://localhost:3000/usuarios/')
+         .then(res=>res.json())
+         .catch(error =>{
+             console.log(error)
+         })
+         .then(res=>{
+
+         for(var i in res){
+           if((res[i].user!="admin")){
+            tabla.innerHTML +=
+         `<tr>
+         <th> ${res[i].nombre}</th>
+         <th> ${res[i].apellido}</th>
+         <th> ${res[i].user}</th>
+         <th> <button type="button"  value="${res[i].user}" onclick="mod(this)" class="btn btn-black" >Edición</button></th>
+         </tr>`
+           }
+           
+          
+
+         }
+
+
+
+         }
+         
+         )
+
+        }
+       function cambio7(){
+         location.href="playlist.html"
+       }
+       function mod(botn){
+         var us= botn.value
+         sessionStorage.setItem("edicion",us)
+         location.href="useredit.html"
+         }
+
+
+        function cambio1(){
+          location.href="inicial.html"
+          
+ 
+        }
+       
+       function cambio2(){
+           location.href="inicio.html"
+       }
+      
+      function cambio3(){
+          location.href="vercanciones.html"
+
+      }
+function cambio5(){
+
+  location.href="canciones.html"
+}
+        </script>
+      
+          </html>

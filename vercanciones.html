@@ -1,0 +1,221 @@
+
+<html>
+    <head>
+    <link href="estiloinicial.css" rel="stylesheet">
+    </head>
+    <body onload="agregar()" id="main">
+    <div class="sidenav">
+             <div class="login-main-text">
+                <button onclick ="cambio1()"class="btn btn-black">Inicial</button>
+                <p></p>
+                 <button onclick="cambio2()" class="btn btn-black">informacion usuario</button>
+                 <p></p>
+                 <button onclick="cambio4()" class="btn btn-black">informacion personal</button>
+                 <p></p>
+                 <button onclick="fdavid()"  class="btn btn-black">canciones</button>
+                 <p></p>
+                 <button onclick="cambio7()" class="btn btn-black">playlist</button>
+                 <p></p>
+                 <button onclick="cambio5()"  class="btn btn-black">comentarios</button>
+                 <p></p>
+                 
+                <button onclick="cambio3()" class="btn btn-black">Salir</button>
+             </div>
+          </div>
+    
+          <div class="main">
+            <div class="container">
+                <div class="section-title">
+                 <h2>Canciones </h2>
+                </div>
+                <table class="table" >
+                    <thead>
+                    <tr>
+                    <th scope="col">id</th>   
+                    <th scope="col">Nombre</th>
+                    <th scope="col"> Artista</th>
+                    <th scope="col">imagen</th>
+                    <th scope="col"> Album</th>
+                    <th scope="col"> Fecha</th>
+                    <th scope="col"> Opción</th>
+                    <th scope="col"> Opción</th> 
+                </tr>
+                   <tbody id="Cuerpo"></tbody>
+                  </thead>
+                </table>
+              
+               </div>
+     </div>
+            </body>
+           <script>
+            var a =0;
+             var a2 ="";
+             var a3 ="";
+             var a4 ="";
+             var a5 ="";
+             var a6 ="";
+             var a8 ="";
+             var a8 ="";
+             var a9=0;
+         function cambio1(){
+             location.href="inicial.html"
+         }
+          function cambio2(){
+              location.href="inforuser.html"
+          }
+
+          function cambio3(){
+            location.href="inicio.html"   
+          }
+          function cambio4(){
+            location.href="personal.html"
+          }
+           function cambio5(){
+             location.href="comentarios.html"
+           }
+           function cambio7(){
+             location.href="playlist.html"
+           } 
+            
+            function agregar(){
+            var tabla = document.querySelector('#Cuerpo')
+            fetch('http://localhost:3000/canciones/')
+         .then(res=>res.json())
+         .catch(error =>{
+             console.log(error)
+         })
+         .then(res=>{
+
+         for(var i in res){
+         tabla.innerHTML+=
+         `<tr>
+         <th> ${res[i].id}</th>
+         <th> ${res[i].nombre}</th>
+         <th> ${res[i].artista}</th>
+         <th> ${res[i].imagen}</th>
+         <th> ${res[i].album}</th>
+         <th> ${res[i].fecha}</th>
+         <th> <button type="button" value="${res[i].id}"  onclick="agregar2(this)" class="btn btn-black" >aceptar</button></th>
+         <th> <button type="button" value="${res[i].nombre}" onclick="eliminar(this)" class="btn btn-black" >eliminar</button></th>
+         </tr>`  
+          
+
+         }
+
+
+
+         }
+         
+         )
+            
+            
+            }
+           
+
+            function eliminar(boton){
+        var h = boton.value
+        fetch(`http://localhost:3000/canciones/${h}/`,{
+        method:'DELETE',
+
+        })       
+        .then(res => res.json())
+        .catch(error =>{
+       alert("Ocurrio un error")
+       })
+       .then( response => {
+        alert("Se Elimino la cancion exitosamente")
+         
+       })
+
+       } 
+        
+
+
+        function agregar2(boton){
+         var c = boton.value
+            fetch(`http://localhost:3000/canciones/2${c}/`)
+         .then(res=>res.json())
+         .catch(error =>{
+             console.log(error)
+         })
+         .then(response=>{
+             a = response.id
+             a2 = response.nombre
+             a3 = response.artista
+             a4 = response.album
+             a5 = response.fecha
+             a6 = response.imagen
+             a7 = response.linkspotify
+             a8 = response.linkyoutube
+             ff();
+             eliminar2(a2);
+            }
+           
+           )
+           
+            }
+ 
+           function ff(){
+           var Id = a
+           var Nombre = a2
+           var Artista = a3
+           var Album = a4
+           var Fecha = a5
+           var Imagen = a6
+           var Linkspo = a7
+           var Linkyoutube = a8
+           var objeto ={
+            'id': Id,
+            'nombre': Nombre,
+            'artista': Artista,
+            'album': Album,
+            'fecha': Fecha,
+            'imagen':Imagen,
+            'linkspotify':Linkspo,
+            'linkyoutube': Linkyoutube 
+            }
+            fetch(`http://localhost:3000/canciones/${a}/`,{
+              method:'POST',
+              body: JSON.stringify(objeto),
+              headers:{
+                 'Content-Type':'application/json'
+              }
+              
+    
+              }).then(res => res.json())
+              .catch(err => {
+              console.log('Error',err)
+              alert("Error, verfiquelo en consola")
+              })
+              .then(response =>{
+              alert("La cancion ha sido agregada a biblioteca")
+                
+              })
+              }
+
+        
+        function eliminar2(butin){
+        var h = butin.value
+        fetch(`http://localhost:3000/canciones/${h}/`,{
+        method:'DELETE',
+
+        })       
+        .then(res => res.json())
+        .catch(error =>{
+       alert("Ocurrio un error")
+       })
+       .then( response => {
+        console.log("Se fue")
+         
+       })
+
+       } 
+
+
+            function fdavid(){
+              location.href="canciones.html"
+            }
+            </script>
+      
+          </html>
+            

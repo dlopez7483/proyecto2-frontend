@@ -1,0 +1,101 @@
+
+<html>
+    <head>
+    <link href="estiloinicial.css" rel="stylesheet">
+    </head>
+    <body onload="agregar()" id="main">
+    <div class="sidenav">
+             <div class="login-main-text">
+                <button onclick ="cambio1()"class="btn btn-black">Inicial</button>
+                <p></p>
+                 <button onclick="cambio2()" class="btn btn-black">informacion usuario</button>
+                 <p></p>
+                 <button onclick="cambio4()" class="btn btn-black">informacion personal</button>
+                 <p></p>
+                 <button onclick="fdavid()"  class="btn btn-black">canciones</button>
+                 <p></p>
+                 <button onclick="cambio7()" class="btn btn-black">playlist</button>
+                 <p></p>
+                 <button onclick="fdavid2()"  class="btn btn-black">agregar canciones</button>
+                 <p></p>
+                <button onclick="cambio3()" class="btn btn-black">Salir</button>
+             </div>
+          </div>
+    
+          <div class="main">
+            <div class="container">
+                <div class="section-title">
+                 <h2>Comentarios</h2>
+                </div>
+                <table class="table" >
+                    <thead>
+                    <tr>
+                    <th scope="col">Cancion</th>   
+                    <th scope="col">Comentario</th>
+                    <th scope="col"> Usuario</th>
+                
+                </tr>
+                   <tbody id="Cuerpo"></tbody>
+                  </thead>
+                </table>
+              
+               </div>
+     </div>
+            </body>
+           <script>
+            
+         function cambio1(){
+             location.href="inicial.html"
+         }
+          function cambio2(){
+              location.href="inforuser.html"
+          }
+
+          function cambio3(){
+            location.href="inicio.html"   
+          }
+          function cambio4(){
+            location.href="personal.html"
+          }
+          
+            function cambio7(){
+              location.href="playlist.html"
+            }
+            
+            function agregar(){
+            var tabla = document.querySelector('#Cuerpo')
+            fetch('http://localhost:3000/comentarios/')
+         .then(res=>res.json())
+         .catch(error =>{
+             console.log(error)
+         })
+         .then(res=>{
+
+         for(var i in res){
+         tabla.innerHTML+=
+         `<tr>
+         <th> ${res[i].cancion}</th>
+         <th> ${res[i].comentario}</th>
+         <th> ${res[i].usuario}</th>
+         </tr>`  
+          
+
+         }
+
+
+
+         }
+         
+         )
+            
+            
+            }
+             function fdavid(){
+              location.href="canciones.html"
+            }
+            function fdavid2(){
+              location.href="vercanciones.html"
+            }
+            </script>
+      
+          </html>

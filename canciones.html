@@ -1,0 +1,209 @@
+<html>
+<head>
+<link href="estiloinicial.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body onload="cargar()" id="main">
+<div class="sidenav">
+         <div class="login-main-text">
+            <button onclick="volver2()" type="button" class="btn btn-black">Inicio</button>
+            <p></p>
+            <button onclick="volver1()" type="button" class="btn btn-black">Información usuarios</button>
+            <p></p>
+            <button onclick="volver3()" type="button" class="btn btn-black">Información personal</button>
+            <p></p>
+            <button onclick="volver5()" type="button" class="btn btn-black">agregar canciones</button>
+            <p></p>
+            <button onclick="cambio7()" class="btn btn-black">playlist</button>
+            <p></p>
+            <button onclick="cambio()" type="button" class="btn btn-black">Comentario</button>
+            <p></p>
+            <button  onclick="volver6()" type="button" class="btn btn-black">Salir</button>
+         </div>
+      </div>
+
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form>
+                  <button onclick="variables()" type="button" class="btn btn-black">Buscar canción</button>
+               </form>
+            </div>
+         </div>
+         <div class="form-group row">
+            <label for="name" class="col-md-4 col-form-label text-md-right">nombre canción</label>
+            <div class="col-md-6">
+                <input id ="Nombre" type="text"  class="form-control">
+            </div>
+        </div>
+        <div class="container">
+            <div class="section-title">
+             <h2>Canciones </h2>
+            </div>
+            <table class="table" >
+                <thead>
+                <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col"> Artista</th>
+                <th scope="col"> Album</th>
+                <th scope="col"> Fecha</th>
+                <th scope="col">Imagen</th>
+                <th scope="col"> Spotify</th>
+                <th scope="col">Youtube</th>
+            </tr>
+               <tbody id="Cuerpo"></tbody>
+              </thead>
+            </table>
+          
+           </div>
+
+ </div>
+      
+   
+   </body>
+    
+   <script>
+       var v1 =0;
+       var v2 ="";
+       var v3 ="";
+       var v4 ="";
+       var v5 ="";
+       var v6 ="";
+       var v7 ="";
+       var v8 ="";
+      function cambio7(){
+          location.href="playlist.html"
+      }
+    
+      function variables(){
+         var n = document.querySelector('#Nombre').value   
+         fetch(`http://localhost:3000/canciones/${n}/`)
+         .then(res=>res.json())
+         .catch(error =>{
+             console.log(error)
+         })
+         .then(res=>{
+          v1 = res.id   
+          v2 = res.nombre 
+          v3 = res.artista
+          v4 = res.album
+          v5 = res.fecha
+          v6 = res.imagen
+          v7 = res.linkspotify
+          v8 = res.linkyoutube
+          cargar();
+           }
+         
+         )
+             }
+       function cargar(){
+         var tabla = document.querySelector('#Cuerpo')
+          tabla.innerHTML=
+         `<tr>
+         <th> ${v2}</th>
+         <th> ${v3}</th>
+         <th> ${v4}</th>
+         <th> ${v5}</th>
+         <th><img src="${v6}" class="img-fluid" height="50%" widht="50%"></th>
+         <th><iframe src="${v7}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe> </th>
+         <th><iframe width="200" height="200" src="${v8}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></th>
+         <th> <button type="button" value="${v1}" onclick="play(this)" class="btn btn-black" >Agregar a playlist</button></th>
+         <th><input id ="Comentario" type="text"  class="form-control"></th>
+         <th> <button type="button"  value="${v2}" onclick="comentario(this)" class="btn btn-black" >Comentar</button></th>
+         </tr>` 
+       }  
+      function play(b){
+          var k = b.value
+        sessionStorage.setItem("playl",k)
+        objeto={
+            'id': v1,
+            'nombre': v2,
+            'artista': v3,
+            'album': v4,
+            'fecha': v5,
+            'imagen':v6,
+            'linkspotify':v7,
+            'linkyoutube': v8 
+        }
+        fetch(`http://localhost:3000/canciones/3${v1}/`,{
+              method:'POST',
+              body: JSON.stringify(objeto),
+              headers:{
+                 'Content-Type':'application/json'
+              }
+              
+    
+              }).then(res => res.json())
+              .catch(err => {
+              console.log('Error',err)
+              alert("Error, verfiquelo en consola")
+              })
+              .then(response =>{
+              alert("La cancion ha sido agregada a su playlist")
+                
+              })
+    
+    }
+
+       
+      function comentario(boton){
+       var n = boton.value
+       var h = sessionStorage.usuario
+        var Coment = document.querySelector('#Comentario').value
+       var objeto ={
+      'usuario': h,
+      'comentario':Coment,
+      'cancion': n
+
+       }
+     fetch('http://localhost:3000/comentarios/',{
+      method:'POST',
+      body: JSON.stringify(objeto),
+      headers:{
+      'Content-Type':'application/json'
+      }
+
+     }).then(res=>res.json())
+      .catch(err =>{
+      alert("Error verificar en consola")
+
+      })
+      .then(response =>{
+        
+     alert("Comentario agregado")
+      })
+      }
+     function cambio(){
+         location.href="comentarios.html"
+     }
+
+       function volver1(){
+        var h = sessionStorage.usuario
+          if(h=="admin"){location.href="inforuser.html"}
+          else{alert("No tiene permisos de administrador")} 
+       }    
+       function volver2(){
+           location.href="inicial.html"
+       } 
+
+       function volver3(){
+           location.href="personal.html"
+       }
+       function volver4(){
+           location.href="useredit.html"
+       }
+
+       function volver5(){
+        var h = sessionStorage.usuario
+        if(h=="admin")
+        {location.href="vercanciones.html"}
+          else{alert("No tiene permisos de administrador")} 
+           
+       }
+       function volver6(){
+           location.href="inicio.html"
+       }
+    </script> 
+  
+    
+    
+    </html>

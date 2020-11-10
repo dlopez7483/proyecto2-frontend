@@ -1,0 +1,311 @@
+
+<html>
+<head>
+<link href="estiloinicial.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+<div class="sidenav">
+         <div class="login-main-text">
+            <button onclick="cambio1()"type="button" class="btn btn-black">Información usuarios</button>
+            <p></p>
+            <button onclick ="cambio4()"type="button" class="btn btn-black">Información personal</button>
+            <p></p>
+            <button onclick ="cambio2()" type="button" class="btn btn-black">agregar canciones</button>
+            <p></p>
+            <button onclick="cambio3()" type="button" class="btn btn-black">canciones</button>
+            <p></p>
+            <button onclick="cambio5()" type="button" class="btn btn-black">comentarios</button>
+            <p></p>
+            <button onclick="cambio6()" type="button" class="btn btn-black">playlist</button>
+            <p></p>
+            <button onclick="volver()" type="button" class="btn btn-black">Salir</button>
+         </div>
+       </div>
+
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form>
+                  <button onclick="song()" type="button" class="btn btn-black">Agregar canción</button>
+                 <button onclick="cargarArchivo()" type="button" class="btn btn-black">Carga masiva canciónes</button>
+                  <input type="file" id="File"/>
+                  <p></p> 
+                  <button onclick="opcion()" type="button" class="btn btn-black" >Generar reportes</button>
+               </form>
+            </div>
+         </div>
+         <div class="form-group row">
+            <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre canción</label>
+            <div class="col-md-6">
+                <input id ="Nombre" type="text"  class="form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+         <label for="artista" class="col-md-4 col-form-label text-md-right">artista</label>
+         <div class="col-md-6">
+             <input id ="Artista" type="text"  class="form-control">
+         </div>
+     </div>
+     <div class="form-group row">
+      <label for="fecha" class="col-md-4 col-form-label text-md-right">Fecha</label>
+      <div class="col-md-6">
+          <input id ="Fecha" type="text"  class="form-control">
+      </div>
+  </div>
+
+  <div class="form-group row">
+   <label for="album" class="col-md-4 col-form-label text-md-right">Album</label>
+   <div class="col-md-6">
+       <input id ="Album" type="text"  class="form-control">
+   </div>
+</div>
+      
+<div class="form-group row">
+   <label for="linkspotify" class="col-md-4 col-form-label text-md-right">Link spotify</label>
+   <div class="col-md-6">
+       <input id ="Linkspotify" type="text"  class="form-control">
+   </div>
+</div>
+
+<div class="form-group row">
+   <label for="linkyoutube" class="col-md-4 col-form-label text-md-right">Link youtube</label>
+   <div class="col-md-6">
+       <input id ="Linkyoutube" type="text"  class="form-control">
+   </div>
+</div>
+<div class="form-group row">
+   <label for="imagen" class="col-md-4 col-form-label text-md-right">imagen</label>
+   <div class="col-md-6">
+       <input id ="Imagen" type="text"  class="form-control">
+   </div>
+</div>
+ 
+      </div>
+      <script type="text/javascript" src="jspdf.min.js" ></script>
+      <script type="text/javascript" src="jspdf.plugin.autotable.min.js" ></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+   <script type="text/javascript" >
+
+
+
+function opcion(){
+   var h = sessionStorage.usuario
+   if(h=="admin"){
+   reporte(); 
+   reporte2();
+   }
+else{
+   alert("No tiene permisos de administrador")
+}
+
+}
+
+
+ function reporte(){
+   var pdf = new jsPDF();
+   pdf.text(20,20,"Usuarios registrados");
+
+var columns = ["Usuario", "Nombre", "Apellido", "Contraseña"];
+fetch('http://localhost:3000/usuarios/')
+.then(res=>res.json())
+.catch(error =>{
+ console.log(error)
+ })
+.then(res=>{
+for(var i in res){
+   var data = [
+     [res[i].user,res[i].nombre,res[i].apellido,res[i].contraseña]];
+     pdf.autoTable(columns,data,
+{ margin:{ top: 25 }}
+);
+}
+
+
+
+pdf.save("reporte usuarios.pdf");
+
+})
+
+
+ }
+
+
+ function reporte2(){
+   var pdf = new jsPDF();
+   pdf.text(20,20,"Canciones en el sistema");
+
+var columns = ["Nombre", "Artista", "Album", "Fecha"];
+fetch('http://localhost:3000/canciones/')
+.then(res=>res.json())
+.catch(error =>{
+ console.log(error)
+ })
+.then(res=>{
+for(var i in res){
+   var data = [
+     [res[i].nombre,res[i].artista,res[i].album,res[i].fecha]];
+     pdf.autoTable(columns,data,
+{ margin:{ top: 25 }}
+);
+}
+
+
+
+pdf.save("reportes canciones.pdf");
+
+})
+
+
+ }
+
+function cargarArchivo(){
+        $('#File').parse({
+		     config: {
+			   delimiter: ",",
+			   complete: GuardarCanciones,
+		  },
+		  before: function(file, inputElem)
+		  {
+			 console.log("Parsing file...", file);
+		  },
+		  error: function(err, file)
+		  {
+			 console.log("ERROR:", err, file);
+		  },
+		  complete: function()
+		  {
+        console.log("Done with all files");
+      }
+    });
+  }
+    async function GuardarCanciones(results){
+      var data = results.data;
+      var valor = true
+      for(i=0;i<data.length;i++){
+         var Nombre = data[i][0]
+         var artista = data[i][1]
+         var Album = data[i][2]
+         var Fecha = data[i][3]
+         var Imagen = data[i][4]
+         var Spotify = data[i][5]
+         var Youtube = data[i][6]
+         var objeto ={
+         'nombre': Nombre,
+         'artista':artista,
+         'album': Album,
+         'linkspotify':Spotify,
+         'linkyoutube':Youtube,
+         'fecha':Fecha,
+         'imagen':Imagen
+
+         }
+        fetch('http://localhost:3000/canciones/',{
+         method:'POST',
+              body: JSON.stringify(objeto),
+              headers:{
+                 'Content-Type':'application/json'
+              }
+        }).then(res => res.json())
+        .catch(err => {
+           console.log('Error',err)
+           valor = false
+           })
+           .then(response =>{
+           valor = true
+           console.log('message',response.message)
+           })
+      
+      }
+      if(valor){
+         alert("Se ha agregado el archivo")
+      }
+      else{
+         alert("No se ha podido agregar el archivo ")
+      }
+   }
+  
+  
+        function song(){
+           var Nombre = document.querySelector('#Nombre').value 
+           var Artista = document.querySelector('#Artista').value
+           var Fecha = document.querySelector('#Fecha').value
+           var Album = document.querySelector('#Album').value
+           var Linkspotify = document.querySelector('#Linkspotify').value
+           var Linkyoutube = document.querySelector('#Linkyoutube').value
+           var Imagen = document.querySelector('#Imagen').value
+           var objeto ={
+           'nombre':Nombre,
+           'artista':Artista,
+           'album':Album,
+           'linkspotify':Linkspotify,
+           'linkyoutube':Linkyoutube,
+           'fecha':Fecha,
+           'imagen':Imagen
+            }
+           fetch('http://localhost:3000/canciones/',{
+           method:'POST',
+           body: JSON.stringify(objeto),
+           headers:{
+              'Content-Type':'application/json'
+           }
+           }).then(res => res.json())
+           .catch(err => {
+           console.log('Error',err)
+           alert("Error, verfiquelo en consola")
+           })
+           .then(response =>{
+           if(response.message=="agregada"){
+              alert("Cancion agregada")
+           }
+           else{
+              alert("No se pudo agregar la canción")
+           }
+           })
+          }
+          function volver(){
+             location.href="inicio.html"
+             }
+  
+           function cambio1(){
+            var h = sessionStorage.usuario
+            if(h=="admin"){
+               location.href="inforuser.html"
+            }
+            else{
+              alert("No tiene permisos de Administrador") 
+            }
+           
+  
+           }
+           function cambio2(){
+            var h = sessionStorage.usuario
+            if(h=="admin")
+            {location.href="vercanciones.html"}
+            else{
+              alert("No tiene permisos de Administrador") 
+            }
+  
+           }
+           function cambio3(){
+           location.href="canciones.html"
+  
+           }
+          function cambio4(){
+          location.href="personal.html"
+          }
+          function cambio5(){
+             location.href="comentarios.html"
+          }
+
+          function cambio6(){
+             location.href="playlist.html"
+          }
+          </script> 
+    
+   </body>
+    
+  
+    
+    
+    </html>

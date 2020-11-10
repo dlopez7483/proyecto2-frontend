@@ -1,0 +1,105 @@
+
+<html>
+<head>
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="sidenav">
+   
+   <div class="login-main-text">
+      <img src="astronauta.png" WIDTH=200 HEIGHT=200> 
+      <h2>Music<br>Station</h2>
+      <p>Iniciar sesión</p>    
+            
+   </div>
+      </div>
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form>
+                  <div class="form-group">
+                     <label>Usuario</label>
+                     <p></p>
+                     <input id="User" type="text" class="form-control" placeholder="User Name">
+                  </div>
+                  <p></p>
+                  <div class="form-group">
+                     <label>Contraseña</label>
+                     <p></p>
+                     <input id ="Contraseña" type="password" class="form-control" placeholder="Password">
+                  </div>
+                  <p></p>
+                  <button onclick="Ingresarsesion()"  type="button" class="btn btn-black">Ingresar</button>
+                  <button onclick="registrarse()"   type="button" class="btn btn-secondary">Registrar</button>
+                  <p></p>
+                  <button onclick="Rcontraseña()" type="button" class="btn btn-secondary">Recuperar contrasenia</button> 
+                  <p></p>
+                  <label>Usuario</label>
+          <input id="Recuperar"  type="text" class="form-control">
+               </form>
+            </div>
+         </div>
+      </div>
+   </body>
+      <script>
+
+       function Rcontraseña(){
+          var c = document.querySelector('#Recuperar').value
+          fetch(`http://localhost:3000/usuarios/${c}/`)
+         .then(response =>response.json())
+         .catch(error =>{
+           console.log(error)
+            alert("No se ha encontrado al usurio")
+         })
+         .then(response =>{
+          var jj= response.contraseña
+          alert(` Su contraseña es ${jj}`)
+         })
+       }        
+      
+
+         function Ingresarsesion(){
+          var usuarioname = document.querySelector('#user').value
+          var pass = document.querySelector('#contraseña').value
+          var object ={
+           'user': usuarioname,
+           'contraseña': pass
+          }
+          fetch('http://localhost:3000/login/',{
+          method:'POST',
+          body: JSON.stringify(object),
+          headers:{
+             'Content-Type':'application/json'
+          }
+          
+
+          }).then(res => res.json())
+          .catch(err => {
+          console.log('Error',err)
+          alert("Error, verfiquelo en consola")
+          })
+          .then(response =>{
+          console.log(response.message)
+          if(response.message=="Nelprro"){
+             alert("Usuario o contraseña equivocados")
+          }
+          else{
+          alert("Pase adelante compa")
+          sessionStorage.setItem("usuario",usuarioname)
+            avanzar();
+          }
+          })
+         }
+       function registrarse(){
+        location.href="registro.html"
+      
+       }
+
+       function avanzar(){
+          location.href="inicial.html"
+       }
+      </script>
+   
+   
+   
+      </html>

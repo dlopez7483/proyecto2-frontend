@@ -1,0 +1,155 @@
+<html>
+<link href="styleinicio.css" rel="stylesheet">
+
+
+
+<html lang="en">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+
+
+
+    <link rel="icon" href="Favicon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <title>Music Station</title>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
+    <div class="container">
+    <a class="navbar-brand" href="#">Music Station</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a onclick="volver()" class="nav-link" href="#">Ingresar</a>
+            </li>
+        </ul>
+
+    </div>
+    </div>
+</nav>
+
+<main class="my-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Registro</div>
+                        <div class="card-body">
+                            <form name="my-form" onsubmit="return validform()" action="success.php" method="">
+                                <div class="form-group row">
+                                    <label for="nombre" class="col-md-4 col-form-label text-md-right">nombre</label>
+                                    <div class="col-md-6">
+                                        <input id="Nombre" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="apellido" class="col-md-4 col-form-label text-md-right">apellido</label>
+                                    <div class="col-md-6">
+                                        <input id="Apellido" type="text"  class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="usuario" class="col-md-4 col-form-label text-md-right">usuario</label>
+                                    <div class="col-md-6">
+                                        <input id="User" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="contraseña" class="col-md-4 col-form-label text-md-right">contraseña</label>
+                                    <div class="col-md-6">
+                                        <input id="Contraseña" type="text"  class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="Confirmar_contraseña" class="col-md-4 col-form-label text-md-right">confirmar contraseña</label>
+                                    <div class="col-md-6">
+                                        <input id ="Contraseña2" type="text"  class="form-control">
+                                    </div>
+                                </div>
+
+                                    <div class="col-md-6 offset-md-4">
+                                        <button onclick="registro()" type="button" class="btn btn-primary">
+                                        Registrar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<script>
+    function volver(){
+    location.href="inicio.html"
+    }
+    
+    function registro(){
+      var name = document.querySelector('#Nombre').value
+      var apellido = document.querySelector('#Apellido').value
+      var usuario = document.querySelector('#User').value
+      var contraseña= document.querySelector('#Contraseña').value
+      var confirmar = document.querySelector('#Contraseña2').value
+     var objeto ={
+      'nombre': name,
+      'apellido':apellido,
+      'user':usuario,
+      'contraseña':contraseña
+    }
+    fetch('http://localhost:3000/usuarios/',{
+              method:'POST',
+              body: JSON.stringify(objeto),
+              headers:{
+                 'Content-Type':'application/json'
+              }
+              
+    
+              }).then(res => res.json())
+              .catch(err => {
+              console.log('Error',err)
+              alert("Error, verfiquelo en consola")
+              })
+              .then(response =>{
+              console.log(response.message)
+              if(response.message=="nel"){
+                 alert("Este usuario ya existe")
+              }
+              else{
+                 alert("Se registro al usuario")
+                  }
+              })
+    
+    
+    
+    
+    }
+    
+    
+    
+    </script>
+    
+
+</body>
+</html>
+
+
